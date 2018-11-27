@@ -1,0 +1,475 @@
+﻿<Window x:Name="ResizyBoi"
+        x:Class="Image_ination.MainWindow"
+        xmlns:local="clr-namespace:Image_ination"
+        xmlns:act="clr-namespace:Image_ination.Actions"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d" 
+        Loaded="ResizyBoi_Loaded"
+        Closed="ResizyBoi_Closed"
+        MouseLeftButtonDown="ResizyBoi_MouseLeftButtonDown"
+        RenderOptions.BitmapScalingMode="NearestNeighbor" UseLayoutRounding="True" SnapsToDevicePixels="True" RenderOptions.EdgeMode="Aliased"
+        Background="#FF3F3F46" ScrollViewer.VerticalScrollBarVisibility="Disabled" MinHeight="350" MinWidth="500" WindowState="Maximized" ResizeMode="CanResize" StateChanged="ResizyBoi_StateChanged" Foreground="{x:Null}" WindowStartupLocation="Manual" BorderThickness="0" Icon="Resources/favicon.ico" Margin="0" Title="ImEd is the Standard Image Editor" AllowsTransparency="True" WindowStyle="None">
+    <WindowChrome.WindowChrome>
+        <WindowChrome x:Name="Chrome" CaptionHeight="0" ResizeBorderThickness="0"/>
+    </WindowChrome.WindowChrome>
+    <Window.CommandBindings>
+        <CommandBinding x:Name="CMD_ZOH" Command="act:Commands.ZoomCmd" Executed="Zoom_Executed"  CanExecute="Zoom_CanExecute"/>
+        <CommandBinding x:Name="CMD_ZFit" Command="act:Commands.ZoomFitCmd" Executed="ZoomFit_Executed" CanExecute="ZoomFit_CanExecute"/>
+        <CommandBinding x:Name="CMD_ZoomEnter" Command="act:Commands.ZoomEnterCmd" Executed="ZoomEnter_Executed" CanExecute="ZoomEnter_CanExecute"/>
+        <CommandBinding x:Name="CMD_PinLeft" Command="act:Commands.LeftCmd" Executed="Left_Executed" CanExecute="Left_CanExecute"/>
+        <CommandBinding x:Name="CMD_PinCenter" Command="act:Commands.CenterCmd" Executed="Center_Executed" CanExecute="Center_CanExecute"/>
+        <CommandBinding x:Name="CMD_PinRight" Command="act:Commands.RightCmd" Executed="Right_Executed" CanExecute="Right_CanExecute"/>
+        <CommandBinding x:Name="CMD_NewLayer" Command="act:Commands.NewLayerCmd" Executed="NewLayer_Executed" CanExecute="NewLayer_CanExecute"/>
+        <CommandBinding x:Name="CMD_NewImage" Command="act:Commands.NewImageCmd" Executed="NewImage_Executed" CanExecute="NewImage_CanExecute"/>
+        <CommandBinding x:Name="CMD_SaveImage" Command="act:Commands.SaveImageCmd" Executed="SaveImage_Executed" CanExecute="SaveImage_CanExecute"/>
+        <CommandBinding x:Name="CMD_SaveImageAs" Command="act:Commands.SaveImageAsCmd" Executed="SaveImageAs_Executed" CanExecute="SaveImageAs_CanExecute"/>
+        <CommandBinding x:Name="CMD_OpenImage" Command="act:Commands.OpenImageCmd" Executed="OpenImage_Executed" CanExecute="OpenImage_CanExecute"/>
+        <CommandBinding x:Name="CMD_ResizeCanvas" Command="act:Commands.ResizeCanvasCmd" Executed="ResizeCanvas_Executed" CanExecute="ResizeCanvas_CanExecute"/>
+        <CommandBinding x:Name="CMD_ResizeImage" Command="act:Commands.ResizeImageCmd" Executed="ResizeImage_Executed" CanExecute="ResizeImage_CanExecute"/>
+        <CommandBinding x:Name="CMD_Hotkeys" Command="act:Commands.HotkeysCmd" Executed="Hotkeys_Executed" CanExecute="Hotkeys_CanExecute"/>
+        <CommandBinding x:Name="CMD_PaintTool" Command="act:Commands.PaintToolCmd" Executed="PaintTool_Executed" CanExecute="PaintTool_CanExecute"/>
+        <CommandBinding x:Name="CMD_TranslateTool" Command="act:Commands.TranslateToolCmd" Executed="TranslateTool_Executed" CanExecute="TranslateTool_CanExecute"/>
+    </Window.CommandBindings>
+    <Window.InputBindings>
+        <KeyBinding x:Name="KB_ZOH" Modifiers="Ctrl" Key="D1" Command="act:Commands.ZoomCmd"/>
+        <KeyBinding x:Name="KB_ZFit" Modifiers="Ctrl" Key="D2" Command="act:Commands.ZoomFitCmd"/>
+        <KeyBinding x:Name="KB_ZoomEnter" Modifiers="Alt" Key="Z" Command="act:Commands.ZoomEnterCmd"/>
+        <KeyBinding x:Name="KB_PinLeft" Modifiers="Ctrl+Shift" Key="D1" Command="act:Commands.LeftCmd"/>
+        <KeyBinding x:Name="KB_PinCenter" Modifiers="Ctrl+Shift" Key="D2" Command="act:Commands.CenterCmd"/>
+        <KeyBinding x:Name="KB_PinRight" Modifiers="Ctrl+Shift" Key="D3" Command="act:Commands.RightCmd"/>
+        <KeyBinding x:Name="KB_NewLayer" Modifiers="Ctrl" Key="N" Command="act:Commands.NewLayerCmd"/>
+        <KeyBinding x:Name="KB_NewImage" Modifiers="Ctrl+Shift" Key="N" Command="act:Commands.NewImageCmd"/>
+        <KeyBinding x:Name="KB_SaveImageAs" Modifiers="Ctrl+Shift" Key="S" Command="act:Commands.SaveImageAsCmd"/>
+        <KeyBinding x:Name="KB_SaveImage" Modifiers="Ctrl" Key="S" Command="act:Commands.SaveImageCmd"/>
+        <KeyBinding x:Name="KB_OpenImage" Modifiers="Ctrl+Shift" Key="O" Command="act:Commands.OpenImageCmd"/>
+        <KeyBinding x:Name="KB_ResizeCanvas" Modifiers="Ctrl+Shift" Key="C" Command="act:Commands.ResizeCanvasCmd"/>
+        <KeyBinding x:Name="KB_ResizeImage" Modifiers="Ctrl+Shift" Key="I" Command="act:Commands.ResizeImageCmd"/>
+        <KeyBinding x:Name="KB_Hotkeys" Modifiers="Ctrl+Shift" Key="H" Command="act:Commands.HotkeysCmd"/>
+        <KeyBinding x:Name="KB_PaintTool" Key="B" Command="act:Commands.PaintToolCmd"/>
+        <KeyBinding x:Name="KB_TranslateTool" Key="T" Command="act:Commands.TranslateToolCmd"/>
+    </Window.InputBindings>
+    <Border x:Name="WindowBorder" BorderBrush="{Binding Source={x:Static SystemParameters.WindowGlassBrush}}" BorderThickness="0">
+        <DockPanel x:Name="Content" Width="Auto" HorizontalAlignment="Stretch" Background="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=Window}, Path=ContentColor, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" ClipToBounds="True" LastChildFill="True" Focusable="True">
+            <DockPanel.Resources>
+                <Style TargetType="Button" x:Key="TitleButton">
+                    <Setter Property="Background" Value="{x:Null}"/>
+                    <Setter Property="BorderBrush" Value="{x:Null}"/>
+                    <Setter Property="BorderThickness" Value="0"/>
+                    <Setter Property="FontSize" Value="24"/>
+                    <Setter Property="Padding" Value="0"/>
+                    <Setter Property="Margin" Value="0"/>
+                    <Setter Property="Focusable" Value="False"/>
+                    <Setter Property="IsTabStop" Value="False"/>
+                    <Setter Property="Foreground" Value="{x:Null}"/>
+                    <Setter Property="MaxWidth" Value="45"/>
+                    <Setter Property="MinWidth" Value="45"/>
+                    <Setter Property="Width" Value="45"/>
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="{x:Type Button}">
+                                <Label Background="{TemplateBinding Background}" Margin="0" Padding="0" BorderThickness="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch">
+                                    <ContentPresenter HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
+                                </Label>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                    <Style.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Background" Value="{Binding Source={x:Static SystemParameters.WindowGlassBrush}}"/>
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
+                <Style x:Key="ModeToggle" TargetType="Button" BasedOn="{StaticResource TitleButton}">
+                    <Setter Property="FontSize" Value="18"/>
+                    <Setter Property="Margin" Value="0,0,0,0"/>
+                </Style>
+                <Style x:Key="MaxMin" TargetType="Button" BasedOn="{StaticResource TitleButton}">
+                    <Setter Property="Margin" Value="0,-15,0,0"/>
+                </Style>
+                <Style x:Key="Restore" TargetType="Button" BasedOn="{StaticResource TitleButton}">
+                    <Setter Property="Margin" Value="0,-8,0,0"/>
+                </Style>
+                <Style x:Key="Exit" TargetType="Button" BasedOn="{StaticResource TitleButton}">
+                    <Setter Property="FontSize" Value="16"/>
+                    <Setter Property="Margin" Value="0,-2,0,0"/>
+                </Style>
+                <Style TargetType="Label" x:Key="TitleLabel">
+                    <Setter Property="HorizontalContentAlignment" Value="Center"></Setter>
+                    <Setter Property="VerticalContentAlignment" Value="Center"></Setter>
+                    <Setter Property="Padding" Value="0"></Setter>
+                    <Setter Property="Margin" Value="0"></Setter>
+                    <Setter Property="Foreground" Value="White"></Setter>
+                </Style>
+                <Style BasedOn="{StaticResource {x:Type ToggleButton}}" x:Key="Radio" TargetType="RadioButton">
+                    <Setter Property="Background" Value="{x:Null}"/>
+                    <Setter Property="Focusable" Value="False"/>
+                    <Setter Property="IsTabStop" Value="False"/>
+                    <Setter Property="FontSize" Value="10"/>
+                    <Setter Property="Padding" Value="0"/>
+                    <Setter Property="Margin" Value="0"/>
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="{x:Type ToggleButton}">
+                                <Label Background="{TemplateBinding Background}" Margin="0" Padding="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch">
+                                    <ContentPresenter HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
+                                </Label>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                    <Style.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Background" Value="#3F646470"/>
+                        </Trigger>
+                        <Trigger Property="IsChecked" Value="True">
+                            <Setter Property="Background" Value="#7F808080"/>
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
+                <Style x:Key="Tools" TargetType="RadioButton" BasedOn="{StaticResource Radio}">
+                    <Style.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Background">
+                                <Setter.Value>
+                                    <RadialGradientBrush>
+                                        <GradientStop Color="{Binding Source={x:Static SystemParameters.WindowGlassBrush}, Path=Color}" Offset="0"/>
+                                        <GradientStop Color="Transparent" Offset="1"/>
+                                        <GradientStop Color="{Binding Source={x:Static SystemParameters.WindowGlassBrush}, Path=Color}" Offset="0.4"/>
+                                    </RadialGradientBrush>
+                                </Setter.Value>
+                            </Setter>
+                        </Trigger>
+                        <Trigger Property="IsChecked" Value="True">
+                            <Setter Property="Background">
+                                <Setter.Value>
+                                    <RadialGradientBrush>
+                                        <GradientStop Color="{Binding Source={x:Static SystemParameters.WindowGlassBrush}, Path=Color}" Offset="0"/>
+                                        <GradientStop Color="Transparent" Offset="1"/>
+                                        <GradientStop Color="{Binding Source={x:Static SystemParameters.WindowGlassBrush}, Path=Color}" Offset="0.8"/>
+                                    </RadialGradientBrush>
+                                </Setter.Value>
+                            </Setter>
+                        </Trigger>
+                    </Style.Triggers>
+                    <EventSetter Event="Checked" Handler="Tool_Checked"/>
+                </Style>
+                <Style x:Key="TabItemNull" TargetType="TabItem">
+                    <Setter Property="Background" Value="{x:Null}"/>
+                    <Setter Property="BorderBrush" Value="{x:Null}"/>
+                    <Setter Property="Width" Value="0"/>
+                    <Setter Property="Height" Value="0"/>
+                    <Setter Property="Visibility" Value="Collapsed"/>
+                    <Setter Property="Foreground" Value="{x:Null}"/>
+                    <Setter Property="Margin" Value="0"/>
+                    <Setter Property="Padding" Value="0"/>
+                    <Setter Property="IsTabStop" Value="False"/>
+                </Style>
+                <Style x:Key="ColorPickerLabel" TargetType="Label">
+                    <Setter Property="Padding" Value="5"/>
+                    <Setter Property="HorizontalContentAlignment" Value="Right"/>
+                    <Setter Property="VerticalContentAlignment" Value="Center"/>
+                    <Setter Property="FontSize" Value="12"/>
+                </Style>
+                <Style x:Key="OptionLabel" TargetType="Label" BasedOn="{StaticResource ColorPickerLabel}">
+                    <Setter Property="DockPanel.Dock" Value="Right"/>
+                </Style>
+                <Style x:Key="ColorPickerTextBox" TargetType="TextBox">
+                    <Setter Property="BorderBrush" Value="{x:Null}"/>
+                    <Setter Property="MaxLines" Value="1"/>
+                    <Setter Property="HorizontalContentAlignment" Value="Center"/>
+                    <Setter Property="VerticalContentAlignment" Value="Center"/>
+                    <EventSetter Event="TextChanged" Handler="Color_TextChanged" />
+                </Style>
+                <Style x:Key="OptionsTextBox" TargetType="TextBox">
+                    <Setter Property="DockPanel.Dock" Value="Right"/>
+                    <Setter Property="Width" Value="90"/>
+                    <Setter Property="BorderBrush" Value="{x:Null}"/>
+                    <Setter Property="MaxLines" Value="1"/>
+                    <Setter Property="HorizontalContentAlignment" Value="Center"/>
+                    <Setter Property="VerticalContentAlignment" Value="Center"/>
+                    <EventSetter Event="TextChanged" Handler="PaintOption_TextChanged"/>
+                </Style>
+                <Style x:Key="LayerButtons" TargetType="RadioButton" BasedOn="{StaticResource Radio}">
+                    <EventSetter Event="Checked" Handler="RadioButton_Checked"/>
+                    <EventSetter Event="MouseRightButtonUp" Handler="RadioButton_RightClicked"/>
+                </Style>
+                <Style TargetType="TextBlock" x:Key="RadioText">
+                    <Setter Property="TextAlignment" Value="Center"/>
+                    <Setter Property="Foreground" Value="Black"/>
+                    <Setter Property="Background" Value="{x:Null}"/>
+                    <Setter Property="TextWrapping" Value="Wrap"/>
+                    <Setter Property="FontFamily" Value="Microsoft YaHei UI"/>
+                    <Setter Property="TextDecorations" Value="{x:Null}"/>
+                    <Setter Property="FlowDirection" Value="RightToLeft"/>
+                    <Setter Property="FontSize" Value="13"/>
+                    <Setter Property="VerticalAlignment" Value="Center"/>
+                    <Setter Property="Margin" Value="0"/>
+                    <Setter Property="Padding" Value="0,14"/>
+                    <Setter Property="Height" Value="45"/>
+                </Style>
+                <Style TargetType="Border" x:Key="RadioBorder">
+                    <Setter Property="Height" Value="45"/>
+                    <Setter Property="BorderBrush" Value="#FF3F3F46"/>
+                    <Setter Property="BorderThickness" Value="1"/>
+                </Style>
+                <Style TargetType="Image" x:Key="Immgae">
+                    <Setter Property="RenderOptions.BitmapScalingMode" Value="NearestNeighbor"/>
+                    <Setter Property="SnapsToDevicePixels" Value="True"/>
+                    <Setter Property="UseLayoutRounding" Value="True"/>
+                    <Setter Property="Stretch" Value="None"/>
+                    <Setter Property="StretchDirection" Value="Both"/>
+                </Style>
+                <ItemsPanelTemplate x:Key="MenuItemPanelTemplate">
+                    <StackPanel Margin="-20,0,0,0" Background="#FFF0F0F0"/>
+                </ItemsPanelTemplate>
+                <Style x:Key="ToolbarHelp" TargetType="MenuItem">
+                    <Setter Property="Margin" Value="5,0,-5,0"/>
+                    <Setter Property="Padding" Value="5,2"/>
+                    <Setter Property="BorderBrush" Value="#FF5A5A5A"/>
+                </Style>
+                <Style x:Key="ToolbarMenu" TargetType="MenuItem" BasedOn="{StaticResource ToolbarHelp}">
+                    <Setter Property="ItemsPanel" Value="{StaticResource MenuItemPanelTemplate}"/>
+                </Style>
+                <Style TargetType="MenuItem" x:Key="ToolbarItem">
+                    <Setter Property="Margin" Value="0,0,-40,0"/>
+                    <Style.Triggers>
+                        <Trigger Property="IsEnabled" Value="false">
+                            <Setter Property="Background" Value="#FFB9B9B9"/>
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
+                <BitmapImage x:Key="badge" UriSource="Resources/favicon.ico"/>
+                <BitmapImage x:Key="brush" UriSource="Resources/paint.ico"/>
+                <BitmapImage x:Key="translate" UriSource="Resources/translate.ico"/>
+                <BitmapImage x:Key="icon" UriSource="Resources/icon.png"/>
+                <BitmapImage x:Key="back" UriSource="Resources/back.png"/>
+            </DockPanel.Resources>
+            <Border DockPanel.Dock="Top" x:Name="TitleBorder" Background="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=Window}, Path=UIColor, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" MouseLeftButtonDown="TitleBorder_MouseLeftButtonDown" BorderThickness="0" Padding="0" Panel.ZIndex="5000" ClipToBounds="True">
+                <DockPanel x:Name="TitleDock" Width="Auto" HorizontalAlignment="Stretch">
+                    <StackPanel DockPanel.Dock="Left" Orientation="Horizontal">
+                        <Border BorderThickness="3">
+                            <TextBlock x:Name="Logo" Text="ImEd" Grid.Column="0" Padding="3,0" Margin="0" FontWeight="ExtraBlack" RenderTransformOrigin="0.5,0.5" FontSize="18">
+                                <TextBlock.Foreground>
+                                    <RadialGradientBrush RadiusY="8" RadiusX="19" GradientOrigin="0.5,0.5" SpreadMethod="Repeat">
+                                        <RadialGradientBrush.RelativeTransform>
+                                            <TransformGroup>
+                                                <ScaleTransform CenterY="0.5" CenterX="0.5"/>
+                                                <SkewTransform CenterY="0.5" CenterX="0.5"/>
+                                                <RotateTransform CenterY="0.5" CenterX="0.5"/>
+                                                <TranslateTransform X="0.012"/>
+                                            </TransformGroup>
+                                        </RadialGradientBrush.RelativeTransform>
+                                        <GradientStop Color="#FF57B8FF"/>
+                                        <GradientStop Color="#FFFE6847" Offset="1"/>
+                                    </RadialGradientBrush>
+                                </TextBlock.Foreground>
+                            </TextBlock>
+                            <Border.BorderBrush>
+                                <LinearGradientBrush EndPoint="0.5,1" MappingMode="RelativeToBoundingBox" StartPoint="0.5,0">
+                                    <LinearGradientBrush.RelativeTransform>
+                                        <TransformGroup>
+                                            <ScaleTransform CenterY="0.5" CenterX="0.5" ScaleY="0.9"/>
+                                            <SkewTransform CenterY="0.5" CenterX="0.5"/>
+                                            <RotateTransform CenterY="0.5" CenterX="0.5" Angle="45"/>
+                                            <TranslateTransform/>
+                                        </TransformGroup>
+                                    </LinearGradientBrush.RelativeTransform>
+                                    <GradientStop Color="{Binding Source={x:Static SystemParameters.WindowGlassBrush}, Path=Color}" Offset="0.5"/>
+                                    <GradientStop Color="#009FC93B"/>
+                                    <GradientStop Color="#009FC93B" Offset="1"/>
+                                </LinearGradientBrush>
+                            </Border.BorderBrush>
+                        </Border>
+                        <TextBlock x:Name="TitleText" DockPanel.Dock="Top" Text="ImEd is the Standard Image Editor" FontSize="14" Foreground="#FF727272" FontWeight="ExtraLight" TextTrimming="CharacterEllipsis" ScrollViewer.VerticalScrollBarVisibility="Disabled" IsEnabled="False" Padding="0" Margin="5,0,0,0" IsHitTestVisible="False" VerticalAlignment="Center">
+                            <TextBlock.CacheMode>
+                                <BitmapCache EnableClearType="True" />
+                            </TextBlock.CacheMode>
+                        </TextBlock>
+                    </StackPanel>
+                    <StackPanel DockPanel.Dock="Right" Orientation="Horizontal" HorizontalAlignment="Right" Width="180">
+                        <Button x:Name="ToggleMode" Style="{StaticResource ModeToggle}" Click="ToggleMode_Click">
+                            <Label x:Name="ToggleModeLabel" Style="{StaticResource TitleLabel}" Content="◩" ToolTip="Light Mode" BorderThickness="3,0" IsHitTestVisible="True" Width="45"/>
+                        </Button>
+                        <Button x:Name="MinMax" Style="{StaticResource MaxMin}" Click="MinMax_Click" Height="Auto">
+                            <Label x:Name="MinMaxLabel" Style="{StaticResource TitleLabel}" Content="_" ToolTip="Minimize" Width="45"/>
+                        </Button>
+                        <Button x:Name="RestoreDownMax" Style="{StaticResource Restore}" Click="RestoreDownMax_Click">
+                            <Label x:Name="RestoreDownMaxLabel" Style="{StaticResource TitleLabel}" Content="□" ToolTip="Normalize" Width="45"/>
+                        </Button>
+                        <Button x:Name="ExitButton" Style="{StaticResource Exit}" Click="ExitButton_Click">
+                            <Label x:Name="ExitLabel" Style="{StaticResource TitleLabel}" Content="X" ToolTip="Exit" FontWeight="Thin" Width="45"/>
+                        </Button>
+                    </StackPanel>
+                </DockPanel>
+            </Border>
+            <Menu x:Name="Toolbario" DockPanel.Dock="Top" Background="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=Window}, Path=UIColor, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" Panel.ZIndex="4999" Margin="0,-2,0,0" FontFamily="Consolas" Padding="0,4" Foreground="#FF6C6C6C">
+                <MenuItem Header="_File" Style="{StaticResource ToolbarMenu}" BorderThickness="0,0,1,0" Margin="0,0,-5,0">
+                    <MenuItem x:Name="ToolbarNew" Header="_New" Click="New_Click" Style="{StaticResource ToolbarItem}"/>
+                    <MenuItem x:Name="ToolbarOpen" Header="_Open" Click="Open_Click" Style="{StaticResource ToolbarItem}"/>
+                    <MenuItem x:Name="ToolbarSave" Header="_Save" IsEnabled="False" Click="Save_Click" Style="{StaticResource ToolbarItem}"/>
+                    <MenuItem x:Name="ToolbarSaveAs" Header="_Save As" Click="SaveAs_Click" IsEnabled="False" Style="{StaticResource ToolbarItem}"/>
+                </MenuItem>
+                <MenuItem Header="_Edit" Style="{StaticResource ToolbarMenu}" BorderThickness="1,0">
+                    <MenuItem x:Name="ToolbarHotkeys" Header="_Hotkeys" Click="Hotkeys_Click" Style="{StaticResource ToolbarItem}"/>
+                </MenuItem>
+                <MenuItem Header="_Image" Style="{StaticResource ToolbarMenu}" BorderThickness="1,0">
+                    <MenuItem x:Name="ToolbarResizeCanvas" Header="_Resize Canvas" Click="ResizeCanvas_Click" IsEnabled="False" Style="{StaticResource ToolbarItem}"/>
+                    <MenuItem x:Name="ToolbarResizeImage" Header="_Resize Image" Click="ResizeImage_Click" IsEnabled="False" Style="{StaticResource ToolbarItem}"/>
+                </MenuItem>
+                <MenuItem Header="_Help" Style="{StaticResource ToolbarHelp}" BorderThickness="1,0,0,0">
+                    <MenuItem x:Name="ToolTipsChecked" Header="_Tool Tips" IsCheckable="True" IsChecked="true" Checked="ToolTips_Checked" Unchecked="ToolTips_Checked" Style="{StaticResource ToolbarItem}"/>
+                    <MenuItem Header="_About" Click="About_Click" Style="{StaticResource ToolbarItem}"/>
+                </MenuItem>
+            </Menu>
+            <DockPanel x:Name="Infobar" DockPanel.Dock="Bottom"  Background="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=Window}, Path=UIColor, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" Panel.ZIndex="5000" Height="20">
+                <TextBox x:Name="ZoomPercent" DockPanel.Dock="Left" PreviewKeyDown="ZoomPercent_PreviewKeyDown" DataObject.Pasting="ZoomPercent_Pasting" PreviewTextInput="ZoomPercent_PreviewTextInput" PreviewGotKeyboardFocus="ZoomPercent_GotKeyboardFocus" LostKeyboardFocus="ZoomPercent_LostKeyboardFocus" Text="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=Window}, Path=Zoom, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Foreground="#FF303030" FontSize="14" Padding="0" Background="Gray" Margin="5,0,0,0" HorizontalAlignment="Left" MaxLines="1" MaxLength="15" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Disabled" VerticalContentAlignment="Stretch" HorizontalContentAlignment="Stretch" CaretBrush="Black"/>
+                <TextBlock x:Name="MousePos" DockPanel.Dock="Left" Background="Gray" HorizontalAlignment="Stretch" Foreground="#FF303030" FontSize="14" Padding="2,0" Visibility="Collapsed" Margin="10,0,0,0">
+                </TextBlock>
+                <TextBlock x:Name="ImageSize" DockPanel.Dock="Right" Background="Gray" HorizontalAlignment="Right" Foreground="#FF303030" FontSize="14" Padding="2,0" Visibility="Collapsed" Margin="0,0,5,0">
+                    <Run Text="{Binding ElementName=ImageCanvas, Path=Width}"/>
+                    <Run Text="X"/>
+                    <Run Text="{Binding ElementName=ImageCanvas, Path=Height}"/>
+                </TextBlock>
+                <TextBlock x:Name="ImageName" DockPanel.Dock="Right" Text="" Background="Gray" HorizontalAlignment="Right" Margin="0,0,10,0" Foreground="#FF303030" FontSize="14" Padding="2,0" Visibility="Collapsed"/>
+            </DockPanel>
+            <Expander x:Name="LeftMenu" DockPanel.Dock="Left" BorderBrush="#3F000000" BorderThickness="0,0,1,0" HorizontalAlignment="Right" ExpandDirection="Right" IsExpanded="True" Background="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=Window}, Path=UIColor, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Padding="0,5" Margin="0,-5" ClipToBounds="True" Focusable="False" Panel.ZIndex="4998">
+                <DockPanel x:Name="LeftDock" Width="80" Margin="-25,10,0,0" ClipToBounds="True">
+                    <StackPanel x:Name="ToolList" DockPanel.Dock="Top" Background="{x:Null}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="5,10,0,10">
+                        <RadioButton x:Name="Brush" IsChecked="True" Style="{StaticResource Tools}" Margin="0,0,0,0" Height="70" Padding="0" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Width="70">
+                            <Image Source="{StaticResource brush}" Stretch="Fill" RenderTransformOrigin="0.5,0.5" >
+                                <Image.CacheMode>
+                                    <BitmapCache/>
+                                </Image.CacheMode>
+                            </Image>
+                        </RadioButton>
+                        <RadioButton x:Name="Translate" Style="{StaticResource Tools}" Margin="0,0,0,0" Height="70" Padding="0" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Width="70">
+                            <Image Source="{StaticResource translate}" Stretch="Fill" RenderTransformOrigin="0.5,0.5" Margin="0">
+                                <Image.CacheMode>
+                                    <BitmapCache/>
+                                </Image.CacheMode>
+                            </Image>
+                        </RadioButton>
+                    </StackPanel>
+                </DockPanel>
+            </Expander>
+            <Expander x:Name="RightMenu" DockPanel.Dock="Right" BorderBrush="#3F000000" BorderThickness="1,0,0,0" HorizontalAlignment="Right" ExpandDirection="Left" IsExpanded="True" Background="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=Window}, Path=UIColor, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Padding="0,5" Margin="0,-5" ClipToBounds="True" Focusable="False" Panel.ZIndex="4998">
+                <UniformGrid Rows="2" x:Name="RightDock" Width="182" Margin="0,25,-21,0" ClipToBounds="True">
+                    <Border x:Name="OptionsList" BorderBrush="#3F000000" BorderThickness="1" Margin="0" Background="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=Window}, Path=OptionsListColor, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top">
+                        <TabControl x:Name="Lists" Background="{x:Null}" BorderBrush="{x:Null}" Foreground="{x:Null}" BorderThickness="0" IsSynchronizedWithCurrentItem="True" IsHitTestVisible="True" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Padding="0" Margin="0">
+                            <TabItem x:Name="PaintTab" Style="{StaticResource TabItemNull}" Margin="0">
+                                <DockPanel>
+                                    <Border x:Name="PaintTitle" DockPanel.Dock="Top" BorderBrush="Black" BorderThickness="0,0,0,1">
+                                        <TextBlock Text="Paint" HorizontalAlignment="Center" FontSize="24" Margin="0" Padding="0,5" Foreground="Black"/>
+                                    </Border>
+                                    <Canvas x:Name="BrushPreviewContainer" DockPanel.Dock="Top" Height="180" Background="White" Margin="0" ClipToBounds="True">
+                                        <Image x:Name="BrushPreview" ClipToBounds="True" Stretch="UniformToFill"/>
+                                    </Canvas>
+                                    <ScrollViewer x:Name="PaintScroll" DockPanel.Dock="Bottom" Margin="0,10,0,0" FontWeight="Bold" VerticalContentAlignment="Top" VerticalScrollBarVisibility="Hidden" HorizontalContentAlignment="Stretch">
+                                        <StackPanel x:Name="PaintStack" HorizontalAlignment="Stretch" VerticalAlignment="Top">
+                                            <Border>
+                                                <DockPanel Margin="0,0,0,15">
+                                                    <Border BorderBrush="Black" BorderThickness="0,0,0,1" Padding="0,0,0,15">
+                                                        <Grid Width="180" Margin="0">
+                                                            <Grid.RowDefinitions>
+                                                                <RowDefinition Height="30"/>
+                                                                <RowDefinition Height="30"/>
+                                                                <RowDefinition Height="30"/>
+                                                                <RowDefinition Height="30"/>
+                                                            </Grid.RowDefinitions>
+                                                            <Grid.ColumnDefinitions>
+                                                                <ColumnDefinition Width="45"/>
+                                                                <ColumnDefinition Width="45"/>
+                                                                <ColumnDefinition Width="90"/>
+                                                            </Grid.ColumnDefinitions>
+                                                            <Label Grid.Column="0" Grid.Row="0" Content="Red" Style="{StaticResource ColorPickerLabel}" ToolTip="Red component of the brush color"/>
+                                                            <TextBox Grid.Column="1" Grid.Row="0" x:Name="Red" Text="0" Style="{StaticResource ColorPickerTextBox}"/>
+                                                            <Label Grid.Column="0" Grid.Row="1" Content="Green" Style="{StaticResource ColorPickerLabel}" ToolTip="Green component of the brush color"/>
+                                                            <TextBox Grid.Column="1" Grid.Row="1" x:Name="Green" Text="0" Style="{StaticResource ColorPickerTextBox}"/>
+                                                            <Label Grid.Column="0" Grid.Row="2" Content="Blue" Style="{StaticResource ColorPickerLabel}" ToolTip="Blue component of the brush color"/>
+                                                            <TextBox Grid.Column="1" Grid.Row="2" x:Name="Blue" Text="0" Style="{StaticResource ColorPickerTextBox}"/>
+                                                            <Label Grid.Column="0" Grid.Row="3" Content="Alpha" Style="{StaticResource ColorPickerLabel}" ToolTip="Determines the transparency of the brush"/>
+                                                            <TextBox Grid.Column="1" Grid.Row="3" x:Name="Alpha" Text="255" Style="{StaticResource ColorPickerTextBox}"/>
+                                                            <Border Grid.Column="2" Grid.RowSpan="4" BorderThickness="4,2">
+                                                                <Canvas x:Name="ColorPreview" Background="Black">
+                                                                    <Canvas Background="Transparent"/>
+                                                                </Canvas>
+                                                            </Border>
+                                                        </Grid>
+                                                    </Border>
+                                                </DockPanel>
+                                            </Border>
+                                            <Border>
+                                                <DockPanel Margin="0,0,0,15">
+                                                    <TextBox x:Name="Thickness" Text="2" Style="{StaticResource OptionsTextBox}" MaxLength="4"/>
+                                                    <Label Content="Thickness" Style="{StaticResource OptionLabel}"/>
+                                                </DockPanel>
+                                            </Border>
+                                            <Border>
+                                                <DockPanel Margin="0,0,0,15">
+                                                    <ComboBox SelectionChanged="PaintOption_SelectionChanged" x:Name="BrushStyle" BorderBrush="{x:Null}" Width="90" DockPanel.Dock="Right" VerticalContentAlignment="Stretch">
+                                                        <ComboBoxItem x:Name="SquareBrush" Content="Square" IsSelected="True"/>
+                                                        <ComboBoxItem x:Name="CircularBrush" Content="Circular"/>
+                                                        <ComboBoxItem x:Name="TriangularBrush" Content="Triangular"/>
+                                                    </ComboBox>
+                                                    <Label Content="Brush Style" Style="{StaticResource OptionLabel}" ToolTip="How the brush looks (note: thickness of 1 will disable all brushes besides square)"/>
+                                                </DockPanel>
+                                            </Border>
+                                        </StackPanel>
+                                    </ScrollViewer>
+                                </DockPanel>
+                            </TabItem>
+                            <TabItem x:Name="TranslateTab" Style="{StaticResource TabItemNull}" Margin="0">
+                                <DockPanel>
+                                    <Border x:Name="TranslateTitle" DockPanel.Dock="Top" BorderBrush="Black" BorderThickness="0,0,0,1">
+                                        <TextBlock Text="Translate" HorizontalAlignment="Center" FontSize="24" Margin="0" Padding="0,5" Foreground="Black"/>
+                                    </Border>
+                                    <ScrollViewer x:Name="TranslateScroll" DockPanel.Dock="Bottom" Margin="0,10,0,0" FontWeight="Bold" VerticalContentAlignment="Top" VerticalScrollBarVisibility="Hidden" HorizontalContentAlignment="Stretch">
+                                        <StackPanel x:Name="TranslateStack" HorizontalAlignment="Stretch" VerticalAlignment="Top">
+                                        </StackPanel>
+                                    </ScrollViewer>
+                                </DockPanel>
+                            </TabItem>
+                        </TabControl>
+                    </Border>
+                    <Border x:Name="LayersList"  BorderBrush="#3F000000" BorderThickness="1" Margin="0" Background="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=Window}, Path=LayersListColor, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}">
+                        <DockPanel>
+                            <Border DockPanel.Dock="Top" BorderBrush="Black" BorderThickness="0,1">
+                                <TextBlock Text="Layers" HorizontalAlignment="Center" FontSize="24" Margin="0" Padding="0,5"/>
+                            </Border>
+                            <ScrollViewer DockPanel.Dock="Bottom" x:Name="LayerScroll" Margin="0" FontWeight="Bold" VerticalContentAlignment="Bottom" VerticalScrollBarVisibility="Hidden" HorizontalContentAlignment="Stretch">
+                                <StackPanel x:Name="LayerStack" Background="#19000000" HorizontalAlignment="Stretch" Margin="10" VerticalAlignment="Bottom">
+                                </StackPanel>
+                            </ScrollViewer>
+                        </DockPanel>
+                    </Border>
+                </UniformGrid>
+            </Expander>
+            <Canvas x:Name="LayerCanvas" MouseLeftButtonDown="LayerCanvas_MouseLeftButtonDown" MouseUp="LayerCanvas_MouseUp" MouseRightButtonDown="LayerCanvas_MouseRightButtonDown" PreviewMouseWheel="LayerCanvas_MouseWheel" MouseDown="LayerCanvas_MouseDown" Panel.ZIndex="-2" ScrollViewer.VerticalScrollBarVisibility="Disabled" Background="#00000000" ClipToBounds="True">
+                <Canvas x:Name="ImageCanvas" MouseLeftButtonDown="ImageCanvas_MouseLeftButtonDown" MouseLeftButtonUp="ImageCanvas_MouseLeftButtonUp" MouseMove="ImageCanvas_MouseMove" Width="0" Height="0" Panel.ZIndex="-1" RenderTransformOrigin="0.5,0.5" ScrollViewer.VerticalScrollBarVisibility="Disabled" ClipToBounds="True">
+                    <Canvas.RenderTransform>
+                        <TransformGroup>
+                            <ScaleTransform x:Name="Scale"/>
+                            <SkewTransform/>
+                            <RotateTransform/>
+                            <TranslateTransform x:Name="Trans"/>
+                        </TransformGroup>
+                    </Canvas.RenderTransform>
+                    <Canvas.Background>
+                        <ImageBrush ImageSource="{StaticResource back}" TileMode="Tile" ViewportUnits="Absolute" Viewport="0,0,160,120">
+                            <ImageBrush.Transform>
+                                <TransformGroup>
+                                    <ScaleTransform x:Name="BackgroundScale"/>
+                                    <SkewTransform/>
+                                    <RotateTransform/>
+                                    <TranslateTransform/>
+                                </TransformGroup>
+                            </ImageBrush.Transform>
+                        </ImageBrush>
+                    </Canvas.Background>
+                </Canvas>
+            </Canvas>
+        </DockPanel>
+    </Border>
+</Window>

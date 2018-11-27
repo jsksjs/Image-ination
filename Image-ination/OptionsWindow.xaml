@@ -1,0 +1,377 @@
+﻿<Window x:Name="Options"
+        x:Class="Image_ination.OptionsWindow"
+        xmlns:local="clr-namespace:Image_ination"
+        xmlns:act="clr-namespace:Image_ination.Actions"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d" 
+        KeyDown="Options_KeyDown"
+        Closed="Options_Closed"
+        Loaded="Options_Loaded"
+        SnapsToDevicePixels="True" WindowState="Normal" ResizeMode="NoResize" WindowStartupLocation="Manual" BorderThickness="0" Margin="0" IsTabStop="False" HorizontalAlignment="Center" VerticalAlignment="Center" HorizontalContentAlignment="Center" ShowInTaskbar="False" WindowStyle="None" Background="{x:Null}" Foreground="{x:Null}" Title="OOGA" MaxHeight="450" MaxWidth="400" Topmost="True" SizeToContent="WidthAndHeight" Padding="0">
+    <WindowChrome.WindowChrome>
+        <WindowChrome CaptionHeight="0"/>
+    </WindowChrome.WindowChrome>
+    <Window.Resources>
+        <Style TargetType="Button" x:Key="TitleButton">
+            <Setter Property="Background" Value="{x:Null}"/>
+            <Setter Property="BorderBrush" Value="{x:Null}"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="FontSize" Value="24"/>
+            <Setter Property="Padding" Value="0"/>
+            <Setter Property="Margin" Value="0"/>
+            <Setter Property="Focusable" Value="False"/>
+            <Setter Property="IsTabStop" Value="False"/>
+            <Setter Property="Foreground" Value="{x:Null}"/>
+            <Setter Property="MaxWidth" Value="45"/>
+            <Setter Property="MinWidth" Value="45"/>
+            <Setter Property="Width" Value="45"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Label Background="{TemplateBinding Background}" Margin="0" Padding="0" BorderThickness="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch">
+                            <ContentPresenter HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
+                        </Label>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="{Binding Source={x:Static SystemParameters.WindowGlassBrush}}"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+        <Style x:Key="Exit" TargetType="Button" BasedOn="{StaticResource TitleButton}">
+            <Setter Property="FontSize" Value="16"/>
+            <Setter Property="Margin" Value="0,-2,0,0"/>
+        </Style>
+        <Style TargetType="Label" x:Key="TitleLabel">
+            <Setter Property="HorizontalContentAlignment" Value="Center"></Setter>
+            <Setter Property="VerticalContentAlignment" Value="Center"></Setter>
+            <Setter Property="Padding" Value="0"></Setter>
+            <Setter Property="Margin" Value="0"></Setter>
+            <Setter Property="Foreground" Value="White"></Setter>
+        </Style>
+        <Style TargetType="Border" x:Key="ResizeCanvasBorder">
+            <Setter Property="Height" Value="50"/>
+            <Setter Property="Margin" Value="5,0,5,0"/>
+            <Setter Property="BorderBrush" Value="{Binding Source={x:Static SystemParameters.WindowGlassBrush}}"/>
+            <Setter Property="BorderThickness" Value="1,0,1,1"/>
+        </Style>
+        <Style TargetType="Label" x:Key="ResizeCanvasLabel">
+            <Setter Property="Width" Value="110"/>
+            <Setter Property="FontFamily" Value="Segoe UI Semibold"/>
+            <Setter Property="Padding" Value="0"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="HorizontalContentAlignment" Value="Right"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="Margin" Value="0,0,0,3"/>
+            <Setter Property="DockPanel.Dock" Value="Left"/>
+        </Style>
+        <Style TargetType="TextBox" x:Key="ResizeCanvasTextBox">
+            <Setter Property="Width" Value="40"/>
+            <Setter Property="Background" Value="#FF919191"/>
+            <Setter Property="FontFamily" Value="Segoe UI Semibold"/>
+            <Setter Property="Padding" Value="0,2"/>
+            <Setter Property="HorizontalAlignment" Value="Left"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="VerticalContentAlignment" Value="Stretch"/>
+            <Setter Property="Margin" Value="0,0,20,0"/>
+            <Setter Property="DockPanel.Dock" Value="Right"/>
+        </Style>
+        <Style x:Key="OptionsStack" TargetType="StackPanel">
+            <Setter Property="Background" Value="#19000000"/>
+            <Setter Property="HorizontalAlignment" Value="Stretch"/>
+            <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Auto"/>
+        </Style>
+        <Style x:Key="AboutTextBlock" TargetType="TextBlock">
+            <Setter Property="TextAlignment" Value="Center"/>
+            <Setter Property="Foreground" Value="#FF6A6A6A"/>
+            <Setter Property="Padding" Value="0, 5, 0, 5"/>
+            <Setter Property="TextWrapping" Value="Wrap"/>
+            <Setter Property="FontFamily" Value="MS UI Gothic"/>
+            <Setter Property="FontSize" Value="22"/>
+        </Style>
+        <Style x:Key="TabItemNull" TargetType="TabItem">
+            <Setter Property="Background" Value="{x:Null}"/>
+            <Setter Property="BorderBrush" Value="{x:Null}"/>
+            <Setter Property="Width" Value="0"/>
+            <Setter Property="Height" Value="0"/>
+            <Setter Property="Visibility" Value="Collapsed"/>
+            <Setter Property="Foreground" Value="{x:Null}"/>
+            <Setter Property="Margin" Value="0"/>
+            <Setter Property="Padding" Value="0"/>
+            <Setter Property="IsTabStop" Value="False"/>
+        </Style>
+        <Style x:Key="Scroll" TargetType="ScrollViewer">
+            <Setter Property="Margin" Value="0"/>
+            <Setter Property="Height" Value="Auto"/>
+            <Setter Property="Width" Value="Auto"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="VerticalContentAlignment" Value="Bottom"/>
+            <Setter Property="VerticalScrollBarVisibility" Value="Auto"/>
+        </Style>
+        <Style x:Key="HotkeyLabel" TargetType="Label">
+            <Setter Property="Margin" Value="0"/>
+            <Setter Property="Padding" Value="5,10,5,5"/>
+        </Style>
+        <Style x:Key="HotkeyLabelName" TargetType="Label" BasedOn="{StaticResource HotkeyLabel}">
+            <Setter Property="DockPanel.Dock" Value="Left"/>
+            <Setter Property="HorizontalAlignment" Value="Left"/>
+        </Style>
+        <Style x:Key="HotkeyLabelPlus" TargetType="Label" BasedOn="{StaticResource HotkeyLabel}">
+            <Setter Property="DockPanel.Dock" Value="Right"/>
+            <Setter Property="HorizontalAlignment" Value="Right"/>
+            <Setter Property="Content" Value=" + "/>
+        </Style>
+        <Style x:Key="HotkeyInput" TargetType="TextBox">
+            <Setter Property="DockPanel.Dock" Value="Right"/>
+            <Setter Property="Width" Value="50"/>
+            <Setter Property="Margin" Value="0"/>
+            <Setter Property="FontSize" Value="10"/>
+            <Setter Property="HorizontalAlignment" Value="Right"/>
+            <Setter Property="MaxLines" Value="1"/>
+            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+            <Setter Property="VerticalContentAlignment" Value="Stretch"/>
+            <Setter Property="AcceptsReturn" Value="False"/>
+            <EventSetter Event="PreviewKeyDown" Handler="HotkeyInput_PreviewKeyDown"/>
+            <EventSetter Event="GotFocus" Handler="HotkeyInput_GotFocus"/>
+            <EventSetter Event="LostFocus" Handler="HotkeyInput_LostFocus"/>
+        </Style>
+        <Style x:Key="HotkeyModInput" TargetType="TextBox">
+            <Setter Property="DockPanel.Dock" Value="Right"/>
+            <Setter Property="Width" Value="75"/>
+            <Setter Property="Margin" Value="0"/>
+            <Setter Property="FontSize" Value="10"/>
+            <Setter Property="HorizontalAlignment" Value="Right"/>
+            <Setter Property="MaxLines" Value="1"/>
+            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+            <Setter Property="VerticalContentAlignment" Value="Stretch"/>
+            <EventSetter Event="PreviewKeyDown" Handler="HotkeyModInput_PreviewKeyDown"/>
+            <EventSetter Event="GotFocus" Handler="HotkeyInput_GotFocus"/>
+            <EventSetter Event="LostFocus" Handler="HotkeyInput_LostFocus"/>
+        </Style>
+        <Style BasedOn="{StaticResource {x:Type ToggleButton}}" x:Key="Radio" TargetType="RadioButton">
+            <Setter Property="Background" Value="{x:Null}"/>
+            <Setter Property="Focusable" Value="False"/>
+            <Setter Property="IsTabStop" Value="False"/>
+            <Setter Property="FontSize" Value="24"/>
+            <Setter Property="FontWeight" Value="Thin"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type ToggleButton}">
+                        <Label Background="{TemplateBinding Background}" Foreground="Black" FlowDirection="LeftToRight" Margin="0" Padding="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" HorizontalContentAlignment="Center" VerticalContentAlignment="Center">
+                            <ContentPresenter HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
+                        </Label>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#3F646470"/>
+                </Trigger>
+                <Trigger Property="IsChecked" Value="True">
+                    <Setter Property="Background" Value="#7F808080"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+    </Window.Resources>
+    <Border BorderThickness="1" BorderBrush="Black">
+        <DockPanel x:Name="Content">
+            <DockPanel x:Name="Titlebar" DockPanel.Dock="Top" PreviewMouseLeftButtonDown="Titlebar_MouseLeftButtonDown" Background="#00000000">
+                <StackPanel Orientation="Horizontal" Height="30" HorizontalAlignment="Right" VerticalAlignment="Top" DockPanel.Dock="Right" Focusable="True">
+                    <Button x:Name="AcceptButton" Style="{StaticResource Exit}" Click="AcceptButton_Click" Height="35">
+                        <Label x:Name="AcceptLabel" Style="{StaticResource TitleLabel}" Content="✓" ToolTip="Accept Changes" FontWeight="Thin" Width="45"/>
+                    </Button>
+                    <Button x:Name="ExitButton" Style="{StaticResource Exit}" Click="ExitButton_Click" Height="35">
+                        <Label x:Name="ExitLabel" Style="{StaticResource TitleLabel}" Content="X" ToolTip="Cancel Changes" FontWeight="Thin" Width="45"/>
+                    </Button>
+                </StackPanel>
+                <TextBlock x:Name="TitleText" Text="[OPTION]" FontSize="16" Foreground="#FF5D5D5D" TextTrimming="CharacterEllipsis" ScrollViewer.VerticalScrollBarVisibility="Disabled" IsEnabled="False" Padding="0" VerticalAlignment="Center" Margin="5,0,0,0" IsHitTestVisible="False" HorizontalAlignment="Left" FontFamily="Nirmala UI Semilight" TextDecorations="{x:Null}"/>
+            </DockPanel>
+            <Border x:Name="OptionsContent" DockPanel.Dock="Bottom" Margin="3,0,3,3" BorderBrush="Black" BorderThickness="1">
+                <TabControl x:Name="Lists" Background="{x:Null}" BorderBrush="{x:Null}" Foreground="{x:Null}" BorderThickness="0" IsSynchronizedWithCurrentItem="True" IsHitTestVisible="True" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Padding="2" Margin="2">
+                    <TabItem x:Name="CanvasResizeTab" Style="{StaticResource TabItemNull}" Margin="0">
+                        <ScrollViewer x:Name="CanvasResizeScroll" Style="{StaticResource Scroll}">
+                            <StackPanel x:Name="CanvasResizeStack" Style="{StaticResource OptionsStack}">
+                                <Border Style="{StaticResource ResizeCanvasBorder}" BorderThickness="1,0" Margin="5,31,5,0">
+                                    <DockPanel>
+                                        <Label Style="{StaticResource ResizeCanvasLabel}" Content="Current Width: "/>
+                                        <TextBlock x:Name="CurrentCanvasWidth" Style="{StaticResource AboutTextBlock}" FontFamily="Segoe UI Semibold" FontSize="14" Foreground="Black" HorizontalAlignment="Left" VerticalAlignment="Center" Padding="0,0,0,1" />
+                                    </DockPanel>
+                                </Border>
+                                <Border Style="{StaticResource ResizeCanvasBorder}" Margin="5,0">
+                                    <DockPanel>
+                                        <Label Style="{StaticResource ResizeCanvasLabel}" Content="Current Height: "/>
+                                        <TextBlock x:Name="CurrentCanvasHeight" Style="{StaticResource AboutTextBlock}" FontFamily="Segoe UI Semibold" FontSize="14" Foreground="Black" HorizontalAlignment="Left" VerticalAlignment="Center" Padding="0,0,0,1" />
+                                    </DockPanel>
+                                </Border>
+                                <!--
+                                <Border Margin="0,15" BorderBrush="#7FFFFFFF" BorderThickness="2" VerticalAlignment="Center" HorizontalAlignment="Center">
+                                    <WrapPanel ItemWidth="30" Width="90" ItemHeight="30" HorizontalAlignment="Center" VerticalAlignment="Center" Height="90">
+                                        <RadioButton Style="{StaticResource Radio}" Height="30" Width="30" BorderBrush="{x:Null}">
+                                            <TextBlock Text="⇖"/>
+                                        </RadioButton>
+                                        <RadioButton Style="{StaticResource Radio}" Height="30" Width="30" BorderBrush="{x:Null}">
+                                            <TextBlock Text="⇑"/>
+                                        </RadioButton>
+                                        <RadioButton Style="{StaticResource Radio}" Height="30" Width="30" BorderBrush="{x:Null}">
+                                            <TextBlock Text="⇗"/>
+                                        </RadioButton>
+                                        <RadioButton Style="{StaticResource Radio}" Height="30" Width="30" BorderBrush="{x:Null}">
+                                            <TextBlock Text="⇐"/>
+                                        </RadioButton>
+                                        <RadioButton Style="{StaticResource Radio}" IsChecked="True" Height="30" Width="30" BorderBrush="{x:Null}">
+                                            <TextBlock Text="•"/>
+                                        </RadioButton>
+                                        <RadioButton Style="{StaticResource Radio}" Height="30" Width="30" BorderBrush="{x:Null}">
+                                            <TextBlock Text="⇒"/>
+                                        </RadioButton>
+                                        <RadioButton Style="{StaticResource Radio}" Height="30" Width="30" BorderBrush="{x:Null}">
+                                            <TextBlock Text="⇙"/>
+                                        </RadioButton>
+                                        <RadioButton Style="{StaticResource Radio}" Height="30" Width="30" BorderBrush="{x:Null}">
+                                            <TextBlock Text="⇓"/>
+                                        </RadioButton>
+                                        <RadioButton Style="{StaticResource Radio}" Height="30" Width="30" BorderBrush="{x:Null}">
+                                            <TextBlock Text="⇘"/>
+                                        </RadioButton>
+                                    </WrapPanel>
+                                </Border>-->
+                                <Border Style="{StaticResource ResizeCanvasBorder}" BorderThickness="1,1,1,0" Margin="5,39,5,0">
+                                    <DockPanel>
+                                        <Label Style="{StaticResource ResizeCanvasLabel}" Content="Width: "/>
+                                        <TextBox x:Name="CanvasInputW" LostKeyboardFocus="Input_LostKeyboardFocus" PreviewKeyDown="Input_PreviewKeyDown" GotKeyboardFocus="Input_GotKeyboardFocus" PreviewTextInput="Input_PreviewTextInput" DataObject.Pasting="Input_Pasting" Style="{StaticResource ResizeCanvasTextBox}" MaxLength="10"/>
+                                    </DockPanel>
+                                </Border>
+                                <Border Style="{StaticResource ResizeCanvasBorder}" BorderThickness="1,0" Margin="5,0,5,31">
+                                    <DockPanel>
+                                        <Label Style="{StaticResource ResizeCanvasLabel}" Content="Height: "/>
+                                        <TextBox x:Name="CanvasInputH" LostKeyboardFocus="Input_LostKeyboardFocus" PreviewKeyDown="Input_PreviewKeyDown" GotKeyboardFocus="Input_GotKeyboardFocus" PreviewTextInput="Input_PreviewTextInput" DataObject.Pasting="Input_Pasting" Style="{StaticResource ResizeCanvasTextBox}" MaxLength="10"/>
+                                    </DockPanel>
+                                </Border>
+                            </StackPanel>
+                        </ScrollViewer>
+                    </TabItem>
+                    <TabItem x:Name="ImageResizeTab" Style="{StaticResource TabItemNull}" Margin="0">
+                        <ScrollViewer x:Name="ImageResizeScroll" Style="{StaticResource Scroll}">
+                            <StackPanel x:Name="ImageResizeStack" Style="{StaticResource OptionsStack}">
+                                <Border Style="{StaticResource ResizeCanvasBorder}" BorderThickness="1,0" Margin="5,31,5,0">
+                                    <DockPanel>
+                                        <Label Style="{StaticResource ResizeCanvasLabel}" Content="Current Width: "/>
+                                        <TextBlock x:Name="CurrentImageWidth" Style="{StaticResource AboutTextBlock}" FontFamily="Segoe UI Semibold" FontSize="14" Foreground="Black" HorizontalAlignment="Left" VerticalAlignment="Center" Padding="0,0,0,1"/>
+                                    </DockPanel>
+                                </Border>
+                                <Border Style="{StaticResource ResizeCanvasBorder}">
+                                    <DockPanel>
+                                        <Label Style="{StaticResource ResizeCanvasLabel}" Content="Current Height: "/>
+                                        <TextBlock x:Name="CurrentImageHeight" Style="{StaticResource AboutTextBlock}" FontFamily="Segoe UI Semibold" FontSize="14" Foreground="Black" HorizontalAlignment="Left" VerticalAlignment="Center" Padding="0,0,0,1"/>
+                                    </DockPanel>
+                                </Border>
+                                <Border Style="{StaticResource ResizeCanvasBorder}" BorderThickness="1,1,1,0" Margin="5,39,5,0">
+                                    <DockPanel>
+                                        <Label Style="{StaticResource ResizeCanvasLabel}" Content="Width: "/>
+                                        <TextBox x:Name="ImageInputW" LostKeyboardFocus="Input_LostKeyboardFocus" PreviewKeyDown="Input_PreviewKeyDown" GotKeyboardFocus="Input_GotKeyboardFocus" PreviewTextInput="Input_PreviewTextInput" DataObject.Pasting="Input_Pasting" Style="{StaticResource ResizeCanvasTextBox}" MaxLength="10"/>
+                                    </DockPanel>
+                                </Border>
+                                <Border Style="{StaticResource ResizeCanvasBorder}" BorderThickness="1,0" Margin="5,0,5,31">
+                                    <DockPanel>
+                                        <Label Style="{StaticResource ResizeCanvasLabel}" Content="Height: "/>
+                                        <TextBox x:Name="ImageInputH" LostKeyboardFocus="Input_LostKeyboardFocus" PreviewKeyDown="Input_PreviewKeyDown" GotKeyboardFocus="Input_GotKeyboardFocus" PreviewTextInput="Input_PreviewTextInput" DataObject.Pasting="Input_Pasting" Style="{StaticResource ResizeCanvasTextBox}" MaxLength="10"/>
+                                    </DockPanel>
+                                </Border>
+                            </StackPanel>
+                        </ScrollViewer>
+                    </TabItem>
+                    <TabItem x:Name="NewImageTab" Style="{StaticResource TabItemNull}" Margin="0">
+                        <ScrollViewer x:Name="NewImageScroll" Style="{StaticResource Scroll}">
+                            <StackPanel x:Name="NewImageStack" Style="{StaticResource OptionsStack}">
+                                <Border Style="{StaticResource ResizeCanvasBorder}" BorderThickness="1,1,1,0" Margin="5,39,5,0">
+                                    <DockPanel>
+                                        <Label Style="{StaticResource ResizeCanvasLabel}" Content="Width: "/>
+                                        <TextBox x:Name="NewImageWidth" LostKeyboardFocus="New_LostKeyboardFocus" PreviewKeyDown="New_PreviewKeyDown" GotKeyboardFocus="Input_GotKeyboardFocus" PreviewTextInput="Input_PreviewTextInput" DataObject.Pasting="Input_Pasting" Style="{StaticResource ResizeCanvasTextBox}" MaxLength="10"/>
+                                    </DockPanel>
+                                </Border>
+                                <Border Style="{StaticResource ResizeCanvasBorder}" BorderThickness="1,0" Margin="5,0,5,31">
+                                    <DockPanel>
+                                        <Label Style="{StaticResource ResizeCanvasLabel}" Content="Height: "/>
+                                        <TextBox x:Name="NewImageHeight" LostKeyboardFocus="New_LostKeyboardFocus" PreviewKeyDown="New_PreviewKeyDown" GotKeyboardFocus="Input_GotKeyboardFocus" PreviewTextInput="Input_PreviewTextInput" DataObject.Pasting="Input_Pasting" Style="{StaticResource ResizeCanvasTextBox}" MaxLength="10"/>
+                                    </DockPanel>
+                                </Border>
+                            </StackPanel>
+                        </ScrollViewer>
+                    </TabItem>
+                    <TabItem x:Name="AboutTab" Style="{StaticResource TabItemNull}" Margin="0">
+                        <ScrollViewer x:Name="AboutScroll" Style="{StaticResource Scroll}" VerticalScrollBarVisibility="Hidden">
+                            <StackPanel x:Name="AboutStack" Style="{StaticResource OptionsStack}">
+                                <TextBlock x:Name="AboutText" Style="{StaticResource AboutTextBlock}"/>
+                            </StackPanel>
+                        </ScrollViewer>
+                    </TabItem>
+                    <TabItem x:Name="HotkeysTab" Style="{StaticResource TabItemNull}" Margin="0">
+                        <ScrollViewer x:Name="HotkeysScroll" Style="{StaticResource Scroll}" Margin="0" VerticalScrollBarVisibility="Hidden" Padding="0">
+                            <StackPanel x:Name="HotkeysStack" Style="{StaticResource OptionsStack}" Margin="0">
+                                <DockPanel x:Name="CommandName" Height="35" Margin="0,5,0,0">
+                                    <Label Style="{StaticResource HotkeyLabelName}" Content="Command"/>
+                                    <TextBox Text="Key" Style="{StaticResource HotkeyInput}" ToolTip="Key: any non-modifier key" Focusable="False" IsHitTestVisible="True"/>
+                                    <Label Style="{StaticResource HotkeyLabelPlus}"/>
+                                    <TextBox Text="Modifier" Style="{StaticResource HotkeyModInput}" ToolTip="Modifiers: Ctrl, Shift, Alt, any coupling of aforementioned, or None (Esc)" IsHitTestVisible="True" Focusable="False"/>
+                                </DockPanel>
+                                <Border BorderThickness="0,0,0,2" BorderBrush="#FF0A0A0A" Margin="0,10,0,20" Padding="0">
+                                    <Label Style="{StaticResource HotkeyLabelName}"/>
+                                </Border>
+                                <DockPanel Height="35" Margin="0,5,0,10">
+                                    <Label Style="{StaticResource HotkeyLabelName}" Content="Pan Canvas"/>
+                                    <TextBox Text="LClick" Style="{StaticResource HotkeyInput}" ToolTip="(Hold)" Focusable="False" IsHitTestVisible="True"/>
+                                    <Label Style="{StaticResource HotkeyLabelPlus}"/>
+                                    <TextBox Text="Ctrl" Style="{StaticResource HotkeyModInput}" ToolTip="(Hold)" IsHitTestVisible="True" Focusable="False"/>
+                                </DockPanel>
+                                <DockPanel Height="35" Margin="0,5,0,10">
+                                    <Label Style="{StaticResource HotkeyLabelName}" Content="Select"/>
+                                    <TextBox Text="LClick" Style="{StaticResource HotkeyInput}" ToolTip="(Hold)" Focusable="False" IsHitTestVisible="True"/>
+                                    <Label Style="{StaticResource HotkeyLabelPlus}"/>
+                                    <TextBox Text="Alt" Style="{StaticResource HotkeyModInput}" ToolTip="(Hold)" IsHitTestVisible="True" Focusable="False"/>
+                                </DockPanel>
+                                <DockPanel Height="35" Margin="0,5,0,10">
+                                    <Label Style="{StaticResource HotkeyLabelName}" Content="Clear Select"/>
+                                    <TextBox Text="RClick" Style="{StaticResource HotkeyInput}" ToolTip="(On canvas)" Focusable="False" IsHitTestVisible="True"/>
+                                    <Label Style="{StaticResource HotkeyLabelPlus}"/>
+                                    <TextBox Text="None" Style="{StaticResource HotkeyModInput}" IsHitTestVisible="True" Focusable="False"/>
+                                </DockPanel>
+                                <DockPanel Height="35" Margin="0,5,0,10">
+                                    <Label Style="{StaticResource HotkeyLabelName}" Content="Zoom"/>
+                                    <TextBox Text="MWheel" Style="{StaticResource HotkeyInput}" ToolTip="(Mouse wheel forward to zoom in, backward to zoom out)" Focusable="False" IsHitTestVisible="True"/>
+                                    <Label Style="{StaticResource HotkeyLabelPlus}"/>
+                                    <TextBox Text="Ctrl" Style="{StaticResource HotkeyModInput}" ToolTip="(Hold)" IsHitTestVisible="True" Focusable="False"/>
+                                </DockPanel>
+                                <DockPanel Height="35" Margin="0,5,0,10">
+                                    <Label Style="{StaticResource HotkeyLabelName}" Content="Zoom (Slower)"/>
+                                    <TextBox Text="MWheel" Style="{StaticResource HotkeyInput}" ToolTip="(Mouse wheel forward to zoom in, backward to zoom out)" Focusable="False" IsHitTestVisible="True"/>
+                                    <Label Style="{StaticResource HotkeyLabelPlus}"/>
+                                    <TextBox Text="Ctrl,Shift" Style="{StaticResource HotkeyModInput}" ToolTip="(Hold)" IsHitTestVisible="True" Focusable="False"/>
+                                </DockPanel>
+                                <DockPanel Height="35" Margin="0,5,0,10">
+                                    <Label Style="{StaticResource HotkeyLabelName}" Content="Zoom (Faster)"/>
+                                    <TextBox Text="MWheel" Style="{StaticResource HotkeyInput}" ToolTip="(Mouse wheel forward to zoom in, backward to zoom out)" Focusable="False" IsHitTestVisible="True"/>
+                                    <Label Style="{StaticResource HotkeyLabelPlus}"/>
+                                    <TextBox Text="Alt,Ctrl" Style="{StaticResource HotkeyModInput}" ToolTip="(Hold)" IsHitTestVisible="True" Focusable="False"/>
+                                </DockPanel>
+                                <DockPanel Height="35" Margin="0,5,0,10">
+                                    <Label Style="{StaticResource HotkeyLabelName}" Content="Delete Layer"/>
+                                    <TextBox Text="RClick" Style="{StaticResource HotkeyInput}" ToolTip="(On button)" Focusable="False" IsHitTestVisible="True"/>
+                                    <Label Style="{StaticResource HotkeyLabelPlus}"/>
+                                    <TextBox Text="None" Style="{StaticResource HotkeyModInput}" IsHitTestVisible="True" Focusable="False"/>
+                                </DockPanel>
+                                <Border BorderThickness="0,0,0,2" BorderBrush="#FF0A0A0A" Margin="0,0,0,20">
+                                    <Label Style="{StaticResource HotkeyLabelName}"/>
+                                </Border>
+                            </StackPanel>
+                        </ScrollViewer>
+                    </TabItem>
+                </TabControl>
+            </Border>
+        </DockPanel>
+    </Border>
+</Window>
