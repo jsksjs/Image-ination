@@ -1,4 +1,4 @@
-This is my CS460W semester long project. I was in a group of 3, though not much work was added by the others even though I put much effort into allowing them to participate every chance available.
+This is my CS460W semester long project. I was in a group of 3, though not much work was added by the others even though I put much effort into allowing them to participate with every chance available.
 
 In the original private GitLab repo, there were a many branches created for different features like drawing, translation, layers, bitmap testing, selection, toolbars, and even the drawing canvas.
 These branches were merged into master when they were completed.
